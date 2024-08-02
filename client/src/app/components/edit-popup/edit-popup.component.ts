@@ -4,6 +4,7 @@ import { Product } from '../../../types';
 import { CommonModule,  } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { RatingModule } from 'primeng/rating';
+import { ButtonModule } from 'primeng/button';
 
 @Component({
   selector: 'app-edit-popup',
@@ -12,13 +13,15 @@ import { RatingModule } from 'primeng/rating';
     DialogModule,
     CommonModule,
     FormsModule,
-    RatingModule
+    RatingModule,
+    ButtonModule
   ],
   templateUrl: './edit-popup.component.html',
   styleUrl: './edit-popup.component.scss'
 })
 export class EditPopupComponent {
   @Input() display:boolean = false;
+  @Output() displayChange = new EventEmitter<boolean>()
   @Input() header!:string;
   
   @Input() product:Product = {
@@ -32,9 +35,12 @@ export class EditPopupComponent {
 
   onConfirm(){
     this.confirm.emit(this.product);
+    this.display = false;
+    this.displayChange.emit(this.display);
   }
 
   onCancel(){
     this.display = false;
+    this.displayChange.emit(this.display)
   }
 }
